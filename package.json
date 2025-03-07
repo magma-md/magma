@@ -1,0 +1,47 @@
+{
+  "name": "purrooser",
+  "version": "1.0.0",
+  "description": "A privacy focused browser",
+  "license": "ISC",
+  "author": "Thoq",
+  "type": "module",
+  "main": "dist/main.js",
+  "email": "tristan@cirkl.ai",
+  "scripts": {
+    "start": "bun run build && electron .",
+    "build:tailwind": "tailwindcss -w -i renderer/styles.tailwind.css -o dist/styles.css",
+    "build:tsc": "tsc",
+    "build:tsc:watch": "tsc -w",
+    "dev": "concurrently \"npm:build:tailwind\" \"npm:build:tsc:watch\" \"electron .\"",
+    "package": "electron-builder"
+  },
+  "build": {
+    "appId": "dev.thoq.purrooser",
+    "productName": "Purrooser",
+    "directories": {
+      "output": "release/"
+    },
+    "files": [
+      "dist/**/*",
+      "renderer/**/*"
+    ],
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Utility"
+    }
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.12",
+    "@types/node": "^22.13.9",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
+    "electron": "^35.0.0",
+    "electron-builder": "^25.1.8",
+    "tailwindcss": "^4.0.11"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.11"
+  }
+}

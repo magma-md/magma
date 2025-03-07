@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "src/*",
+        "renderer/ts/*"
+      ],
+      "@backend/*": [
+        "backend/*"
+      ],
+      "@renderer/*": [
+        "renderer/*"
+      ],
+      "@utilities/*": [
+        "utilities/*"
+      ],
+      "@src/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "renderer/**/*",
+    "backend/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
