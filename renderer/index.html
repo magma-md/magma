@@ -1,48 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: http: data: 'unsafe-inline'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-    <title>Purrooser</title>
-    <link rel="stylesheet" href="../dist/styles.css">
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https: http: data: 'unsafe-inline'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';" />
+    <title>Magma</title>
+    <link rel="stylesheet" href="../dist/styles.css" />
 </head>
 
-<body class="m-0 p-0 select-none text-white font-sans bg-zinc-900">
-    <div id="tabs" class="flex p-1 bg-zinc-950">
-        <div id="tab-list" class="flex flex-1 overflow-x-auto">
-        </div>
-        <button id="new-tab" class="px-2 py-1 hover:bg-zinc-700 rounded transition-colors duration-200">
-            &plus;
-        </button>
+<body class="m-0 p-0 select-none text-white font-sans bg-zinc-950">
+    <div id="tabs" class="border-b border-orange-700 w-[85vw] h-[5vh] fixed top-0 right-0"></div>
+
+    <div id="editor" class="max-w-[85vw] w-[85vw] h-[95vh] fixed top-[5vh] right-0">
+        <textarea class="border-none outline-none w-full h-full bg-zinc-950 text-white font-sans p-2 resize-none"
+            id="editor" placeholder="Type here, begin typing to dismiss..."></textarea>
     </div>
 
-    <div id="nav" class="flex p-1.5 bg-zinc-900">
-        <div class="flex gap-2 mr-2">
-            <button id="back" class="p-1.5 hover:bg-zinc-800 rounded transition-colors duration-200">
-                &longleftarrow;
-            </button>
-
-            <button id="reload" class="p-1.5 hover:bg-zinc-800 rounded transition-colors duration-200">
-                ↻
-            </button>
-
-            <button id="forward" class="p-1.5 hover:bg-zinc-800 rounded transition-colors duration-200">
-                &rightarrowtail;
-            </button>
-        </div>
-        <label for="url" class="sr-only">URL</label>
-        <input type="text" id="url" placeholder="Enter URL" value="https://mi.fly.dev"
-            class="flex-1 p-1.5 text-base outline-none border-none rounded bg-zinc-800" />
-        <button id="go-button" class="p-1.5 ml-2 hover:bg-zinc-800 rounded">Go</button>
+    <div id="tabs" class="border-b border-orange-700 w-[15vw] h-[5vh] fixed top-0 left-0">
+        <img src="../renderer/icons/preview.png" alt="preview" class="invert pt-1" width="24" height="24"/>
     </div>
-
-    <div id="webviews-container" class="w-full h-[calc(100vh-100px)]">
-        <webview id="webview" src="https://mi.fly.dev" class="w-full h-full border-none"></webview>
+    <div id="sidebar" class="border-r border-orange-700 h-screen w-[15vw] fixed top-0 left-0">
     </div>
-    <script type="module" src="../dist/renderer/ts/browser.js"></script>
-    <script type="module" src="../dist/renderer/ts/tabs.js"></script>
-    <script type="module" src="../dist/renderer/ts/shortcuts.js"></script>
+    <script type="module" src="../dist/renderer/ts/magma.js"></script>
 </body>
 
 </html>
