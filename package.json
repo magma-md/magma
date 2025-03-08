@@ -9,10 +9,11 @@
     "email": "tristan@cirkl.ai",
     "scripts": {
         "start": "electron .",
-        "build:tailwind": "tailwindcss -w -i renderer/styles.tailwind.css -o dist/styles.css",
+        "build:tailwind": "tailwindcss -i renderer/styles.tailwind.css -o dist/styles.css",
+        "build:tailwind:watch": "tailwindcss -w -i renderer/styles.tailwind.css -o dist/styles.css",
         "build:tsc": "tsc",
         "build:tsc:watch": "tsc -w",
-        "dev": "concurrently \"npm:build:tailwind\" \"npm:build:tsc:watch\" \"electron .\"",
+        "dev": "concurrently \"npm:build:tailwind\" \"npm:build:tsc\" && concurrently \"npm:build:tailwind:watch\" \"npm:build:tsc:watch\" \"electron .\"",
         "package": "electron-builder",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
