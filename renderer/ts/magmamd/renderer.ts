@@ -36,13 +36,11 @@ class MagmaRenderer {
                     .trim();
 
                 const html = [
-                    '<div class="relative group w-full">',
-                    '    <pre class="bg-zinc-900 rounded-lg p-2 my-2 overflow-auto max-h-[400px] w-full border border-zinc-800">',
-                    language ? `        <div class="absolute right-2 top-2 px-2 py-0.5 text-xs font-mono text-zinc-500 bg-zinc-800 rounded">${language}</div>` : '',
-                    `        <code class="block font-mono text-sm whitespace-pre w-full ${language ? `language-${language}` : ''}">${escapedContent}</code>`,
-                    '    </pre>',
-                    '</div>'
-                ].join('\n');
+                    `<pre class="bg-zinc-900 rounded relative px-2 py-0.5 border border-zinc-800">`,
+                    `<code class="font-mono text-sm leading-4 whitespace-pre block ${language ? `language-${language}` : ''}">${escapedContent}</code>`,
+                    language ? `<span class="absolute right-1 top-0.5 text-xs font-mono text-zinc-500 bg-zinc-800 rounded-sm px-1">${language}</span>` : '',
+                    '</pre>'
+                ].join('');
                 return html;
             }
         },
