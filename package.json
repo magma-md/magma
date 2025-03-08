@@ -9,14 +9,15 @@
     "email": "tristan@cirkl.ai",
     "scripts": {
         "start": "electron .",
-        "build:tailwind": "tailwindcss -i renderer/styles.tailwind.css -o dist/styles.css",
+        "prod:tailwind": "tailwindcss -i renderer/styles.tailwind.css -o dist/styles.css",
+        "prod:tsc": "tsc",
         "build:tailwind:watch": "tailwindcss -w -i renderer/styles.tailwind.css -o dist/styles.css",
-        "build:tsc": "tsc",
-        "build:tsc:watch": "tsc -w",
-        "dev": "concurrently \"npm:build:tailwind\" \"npm:build:tsc\" && concurrently \"npm:build:tailwind:watch\" \"npm:build:tsc:watch\" \"electron .\"",
+        "build:ui": "electron .",
+        "dev": "deno task \"prod:*\" && deno task \"build:*\"",
         "package": "electron-builder",
-        "lint": "eslint . --ext .ts",
-        "lint:fix": "eslint . --ext .ts --fix",
+        "fmt": "deno fmt",
+        "lint": "deno lint",
+        "lint:fix": "deno lint --fix",
         "clean": "rm -rf dist release node_modules"
     },
     "build": {
@@ -47,9 +48,7 @@
         "electron-builder": "^25.1.8",
         "eslint": "^9.22.0",
         "prettier": "^3.5.3",
-        "tailwindcss": "^4.0.11"
-    },
-    "dependencies": {
+        "tailwindcss": "^4.0.11",
         "@tailwindcss/cli": "^4.0.11"
     }
 }
