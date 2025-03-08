@@ -1,0 +1,119 @@
+interface MarkdownRule {
+    pattern: RegExp;
+    replacement: (match: string, ...args: string[]) => string;
+}
+
+class MagmaRenderer {
+    private rules: MarkdownRule[] = [
+        // Headers
+        {
+            pattern: /^(#{1,6})\s(.+)$/gm,
+            replacement: (_, hashes, content) => {
+                const sizes = {
+                    1: 'text-4xl',
+                    2: 'text-3xl',
+                    3: 'text-2xl',
+                    4: 'text-xl',
+                    5: 'text-lg',
+                    6: 'text-base'
+                };
+                return `<h${hashes.length} class="font-bold ${sizes[hashes.length as keyof typeof sizes]} mb-4 mt-6">${content}</h${hashes.length}>`;
+            }
+        },
+        // Code blocks - must come before inline code
+        {
+            pattern: /^```([\s\S]*?)```$/gm,
+            replacement: (_, content) => {
+                const firstNewline = content.indexOf('\n');
+                const language = firstNewline > -1 ? content.slice(0, firstNewline).trim() : '';
+                const actualContent = firstNewline > -1 ? content.slice(firstNewline + 1) : content;
+                const escapedContent = actualContent
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;')
+                    .trim();
+
+                const html = [
+                    '<div class="relative group w-full">',
+                    '    <pre class="bg-zinc-900 rounded-lg p-2 my-2 overflow-auto max-h-[400px] w-full border border-zinc-800">',
+                    language ? `        <div class="absolute right-2 top-2 px-2 py-0.5 text-xs font-mono text-zinc-500 bg-zinc-800 rounded">${language}</div>` : '',
+                    `        <code class="block font-mono text-sm whitespace-pre w-full ${language ? `language-${language}` : ''}">${escapedContent}</code>`,
+                    '    </pre>',
+                    '</div>'
+                ].join('\n');
+                return html;
+            }
+        },
+        // Bold
+        {
+            pattern: /\*\*(.+?)\*\*/g,
+            replacement: (_, content) => `<strong class="font-bold">${content}</strong>`
+        },
+        // Italic
+        {
+            pattern: /\*(.+?)\*/g,
+            replacement: (_, content) => `<em class="italic">${content}</em>`
+        },
+        // Strikethrough
+        {
+            pattern: /~~(.+?)~~/g,
+            replacement: (_, content) => `<s class="line-through">${content}</s>`
+        },
+        // Inline code
+        {
+            pattern: /`(.+?)`/g,
+            replacement: (_, content) => `<code class="bg-zinc-800 rounded px-1 py-0.5 font-mono text-sm">${content}</code>`
+        },
+        // Links
+        {
+            pattern: /\[(.+?)\]\((.+?)\)/g,
+            replacement: (_, text, url) => {
+                const escapedUrl = url.replace(/'/g, "\\'");
+                return `<a href="${url}" class="text-orange-500 hover:text-orange-400 underline" onclick="event.preventDefault(); window.electron?.openExternal('${escapedUrl}');">${text}</a>`;
+            }
+        },
+        // Images
+        {
+            pattern: /!\[(.+?)\]\((.+?)\)/g,
+            replacement: (_, alt, src) => `<img src="${src}" alt="${alt}" class="max-w-full h-auto rounded-lg my-4">`
+        },
+        // Lists
+        {
+            pattern: /^[-*]\s(.+)$/gm,
+            replacement: (_, content) => `<li class="ml-4 list-disc list-inside mb-1">${content}</li>`
+        },
+        // Numbered lists
+        {
+            pattern: /^\d+[.)]\s(.+)$/gm,
+            replacement: (_, content) => `<li class="ml-4 list-decimal list-inside mb-1">${content}</li>`
+        },
+        // Blockquotes
+        {
+            pattern: /^>\s(.+)$/gm,
+            replacement: (_, content) => `<blockquote class="border-l-4 border-orange-500 pl-4 my-4 italic">${content}</blockquote>`
+        },
+        // Horizontal rules
+        {
+            pattern: /^([-*_]){3,}$/gm,
+            replacement: () => '<hr class="my-8 border-t border-zinc-700">'
+        }
+    ];
+
+    render(contents: string): string {
+        let html = contents;
+        
+        // Apply each rule
+        for(const rule of this.rules) {
+            html = html.replace(rule.pattern, (...args) => rule.replacement(...args));
+        }
+
+        // Wrap paragraphs (text not already in HTML tags)
+        html = html.replace(/^(?!<[a-z])[^<\n].+/gm, match => `<p class="mb-4 leading-relaxed">${match}</p>`);
+        
+        return html;
+    }
+}
+
+export default MagmaRenderer;

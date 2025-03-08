@@ -15,7 +15,8 @@
         "dev": "concurrently \"npm:build:tailwind\" \"npm:build:tsc:watch\" \"electron .\"",
         "package": "electron-builder",
         "lint": "eslint . --ext .ts",
-        "lint:fix": "eslint . --ext .ts --fix"
+        "lint:fix": "eslint . --ext .ts --fix",
+        "clean": "rm -rf dist release node_modules"
     },
     "build": {
         "appId": "dev.thoq.magma",

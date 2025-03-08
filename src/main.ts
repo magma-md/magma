@@ -18,7 +18,11 @@ function createWindow() {
         minHeight: 100,
         minWidth: 300,
         webPreferences: {
-            preload: path.join(__dirname, "../../dist/backend/preload.js"),
+            preload: path.join(__dirname, "../../backend/preload.cjs"),
+            contextIsolation: true,
+            nodeIntegration: false,
+            sandbox: false,
+            webviewTag: false
         },
     });
 

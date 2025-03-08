@@ -7,20 +7,38 @@
         content="default-src 'self' https: http: data: 'unsafe-inline'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';" />
     <title>Magma</title>
     <link rel="stylesheet" href="../dist/styles.css" />
+    <style>
+        #sidebar-tabs {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
 </head>
 
 <body class="m-0 p-0 select-none text-white font-sans bg-zinc-950">
-    <div id="tabs" class="border-b border-orange-700 w-[85vw] h-[5vh] fixed top-0 right-0"></div>
+    <div id="tabs" class="border-b border-orange-700 w-[calc(100vw-200px)] h-10 fixed top-0 right-0"></div>
 
-    <div id="editor" class="max-w-[85vw] w-[85vw] h-[95vh] fixed top-[5vh] right-0">
-        <textarea class="border-none outline-none w-full h-full bg-zinc-950 text-white font-sans p-2 resize-none"
+    <div id="editor-container" class="max-w-[calc(100vw-200px)] w-[calc(100vw-200px)] h-[95vh] fixed top-10 right-0">
+        <textarea class="overflow-auto border-none outline-none w-full h-full bg-zinc-950 text-white font-sans p-2 resize-none"
             id="editor" placeholder="Type here, begin typing to dismiss..."></textarea>
+
+        <div class="overflow-auto border-none outline-none w-full h-full bg-zinc-950 text-white font-sans p-2 resize-none"
+            id="preview"></div>
     </div>
 
-    <div id="tabs" class="border-b border-orange-700 w-[15vw] h-[5vh] fixed top-0 left-0">
-        <img src="../renderer/icons/preview.png" alt="preview" class="invert pt-1" width="24" height="24"/>
+    <div id="sidebar-tabs" class="position-relative z-10 border-b border-orange-700 w-[200px] h-10 fixed top-0 left-0 flex items-center justify-center">
+        <div class="button-wrapper">
+            <img 
+                src="../renderer/icons/preview.png"
+                alt="preview"
+                class="cursor-pointer invert pt-1 hover:opacity-75 transition-opacity"
+                width="24" 
+                height="24"
+                id="preview-button"
+                style="z-index: 100; pointer-events: auto; cursor: pointer;"/>
+        </div>
     </div>
-    <div id="sidebar" class="border-r border-orange-700 h-screen w-[15vw] fixed top-0 left-0">
+    <div id="sidebar" class="border-r border-orange-700 h-screen w-48 fixed top-0 left-0">
     </div>
     <script type="module" src="../dist/renderer/ts/magma.js"></script>
 </body>
