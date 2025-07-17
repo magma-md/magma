@@ -7,35 +7,88 @@
         content="default-src 'self' https: http: data: 'unsafe-inline'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';" />
     <title>Magma</title>
     <link rel="stylesheet" href="../dist/styles.css" />
-    <style>
-        #sidebar-tabs {
-            position: relative;
-            z-index: 10;
-        }
-    </style>
+    <link rel="stylesheet" href="../renderer/styles.css" />
 </head>
 
 <body class="m-0 p-0 select-none text-white font-sans bg-zinc-950">
-    <div id="tabs" class="border-b border-orange-700 w-[calc(100vw-200px)] h-10 fixed top-0 right-0"></div>
+    <div id="custom-menu" class="bg-[#18181b]">
+        <div class="window-controls">
+            <div class="window-control-button" id="close-button" title="Close">
+                <svg width="5" height="5" viewBox="0 0 10 10">
+                    <path d="M1 0L0 1l4 4-4 4 1 1 4-4 4 4 1-1-4-4 4-4-1-1-4 4-4-4z" fill="currentColor" />
+                </svg>
+            </div>
 
-    <div id="editor-container" class="max-w-[calc(100vw-200px)] w-[calc(100vw-200px)] h-[95vh] fixed top-10 right-0">
-        <textarea class="overflow-auto border-none outline-none w-full h-full bg-zinc-950 text-white font-sans p-2 resize-none"
+            <div class="window-control-button" id="minimize-button" title="Minimize">
+                <svg width="5" height="1" viewBox="0 0 10 1">
+                    <path d="M0 0h10v1H0z" fill="currentColor" />
+                </svg>
+            </div>
+
+            <div class="window-control-button" id="maximize-button" title="Maximize">
+                <svg width="5" height="5" viewBox="0 0 10 10">
+                    <path d="M0 0v10h10V0H0zm1 1h8v8H1V1z" fill="currentColor" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <div class="menu-item" id="file-menu">File</div>
+            <div class="dropdown-content" id="file-dropdown">
+                <div class="dropdown-item" id="new-file">New File <span class="ml-4 text-xs text-gray-400">Ctrl+N</span></div>
+                <div class="dropdown-item" id="open-file">Open File <span class="ml-4 text-xs text-gray-400">Ctrl+O</span></div>
+                <div class="dropdown-item" id="save-file">Save <span class="ml-4 text-xs text-gray-400">Ctrl+S</span></div>
+                <div class="dropdown-item" id="save-as">Save As <span class="ml-4 text-xs text-gray-400">Ctrl+Shift+S</span></div>
+                <div class="separator"></div>
+                <div class="dropdown-item" id="preferences">Preferences</div>
+                <div class="separator"></div>
+                <div class="dropdown-item" id="quit">Quit</div>
+            </div>
+        </div>
+        <div class="dropdown">
+            <div class="menu-item" id="edit-menu">Edit</div>
+            <div class="dropdown-content" id="edit-dropdown">
+                <div class="dropdown-item" id="undo">Undo</div>
+                <div class="dropdown-item" id="redo">Redo</div>
+                <div class="separator"></div>
+                <div class="dropdown-item" id="cut">Cut</div>
+                <div class="dropdown-item" id="copy">Copy</div>
+                <div class="dropdown-item" id="paste">Paste</div>
+                <div class="separator"></div>
+                <div class="dropdown-item" id="select-all">Select All</div>
+            </div>
+        </div>
+        <div class="dropdown">
+            <div class="menu-item" id="view-menu">View</div>
+            <div class="dropdown-content" id="view-dropdown">
+                <div class="dropdown-item" id="toggle-preview">Toggle Preview</div>
+                <div class="separator"></div>
+                <div class="dropdown-item" id="zoom-in">Zoom In</div>
+                <div class="dropdown-item" id="zoom-out">Zoom Out</div>
+                <div class="dropdown-item" id="reset-zoom">Reset Zoom</div>
+                <div class="separator"></div>
+                <div class="dropdown-item" id="toggle-fullscreen">Toggle Fullscreen</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tabs" class="border-b border-orange-700 w-[calc(100vw-200px)] h-10 fixed top-30 right-0"></div>
+
+    <div id="editor-container" class="max-w-[calc(100vw-200px)] w-[calc(100vw-200px)] h-[95vh] fixed top-40 right-0">
+        <label for="editor"></label><textarea
+            class="overflow-auto border-none outline-none w-full h-full text-white font-sans p-2 resize-none"
             id="editor" placeholder="Type here, begin typing to dismiss..."></textarea>
 
-        <div class="overflow-auto border-none outline-none w-full h-full bg-zinc-950 text-white font-sans p-2 resize-none"
+        <div class="overflow-auto border-none outline-none w-full h-full text-white font-sans p-2 resize-none"
             id="preview"></div>
     </div>
 
-    <div id="sidebar-tabs" class="position-relative z-10 border-b border-orange-700 w-[200px] h-10 fixed top-0 left-0 flex items-center justify-center">
+    <div id="sidebar-tabs"
+        class="position-relative z-10 border-b border-orange-700 w-[100px] h-10 fixed top-30 left-0 flex items-center justify-center">
         <div class="button-wrapper">
-            <img 
-                src="../renderer/icons/preview.png"
-                alt="preview"
-                class="cursor-pointer invert pt-1 hover:opacity-75 transition-opacity"
-                width="24" 
-                height="24"
-                id="preview-button"
-                style="z-index: 100; pointer-events: auto; cursor: pointer;"/>
+            <img src="../renderer/icons/preview.png" alt="preview"
+                class="cursor-pointer invert pt-1 hover:opacity-75 transition-opacity" width="24" height="24"
+                id="preview-button" style="z-index: 100; pointer-events: auto; cursor: pointer;" />
         </div>
     </div>
     <div id="sidebar" class="border-r border-orange-700 h-screen w-48 fixed top-0 left-0">

@@ -1,0 +1,357 @@
+::selection {
+    background-color: #ea580c;
+    color: white;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ea580c;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #ff5f57;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #00000000;
+}
+
+#sidebar-tabs {
+    position: fixed;
+    top: 30px;
+    left: 0;
+    width: 200px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #ea580c;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+#tabs {
+    position: fixed;
+    top: 30px;
+    right: 0;
+    width: calc(100vw - 200px);
+    height: 40px;
+    border-bottom: 1px solid #ea580c;
+    box-sizing: border-box;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    height: 100%;
+    border-right: 1px solid #ea580c;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    min-width: 100px;
+    max-width: 200px;
+}
+
+.tab:hover {
+    background-color: #3a3a3a;
+}
+
+.tab.active {
+    background-color: #2a2a2a;
+}
+
+.tab-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.close-tab {
+    margin-left: 8px;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-tab:hover {
+    background-color: #ea580c;
+}
+
+#editor-container {
+    position: fixed;
+    top: 70px;
+    right: 0;
+    width: calc(100vw - 200px);
+    height: calc(100vh - 70px);
+    box-sizing: border-box;
+}
+
+#custom-menu {
+    display: flex;
+    background-color: #000000;
+    border-bottom: 1px solid #ea580c;
+    height: 30px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    -webkit-app-region: drag;
+    align-items: center;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+}
+
+.window-controls {
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 100%;
+    align-items: center;
+    gap: 6px;
+    border-top-left-radius: 0.75rem;
+}
+
+.menu-item {
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    -webkit-app-region: no-drag;
+    transition: background-color 100ms ease-in-out;
+    border-radius: 5px;
+}
+
+.menu-item:hover {
+    background-color: #2a2a2a;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 1000;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #1f1f1f;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1001;
+    top: 30px;
+    left: 0;
+    border: 1px solid #ea580c;
+    -webkit-app-region: no-drag;
+}
+
+.dropdown-item {
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    -webkit-app-region: no-drag;
+}
+
+.dropdown-item:hover {
+    background-color: #2a2a2a;
+}
+
+.separator {
+    height: 1px;
+    background-color: #ea580c;
+    margin: 5px 0;
+}
+
+.window-control-button {
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+    transition: all 100ms ease-in-out;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+#close-button {
+    background-color: #ff5f57;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#minimize-button {
+    background-color: #ffbd2e;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#maximize-button {
+    background-color: #28c940;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#close-button::before,
+#close-button::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 1px;
+    background-color: #4c0102;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+#close-button::before {
+    transform: rotate(45deg);
+}
+
+#close-button::after {
+    transform: rotate(-45deg);
+}
+
+#minimize-button::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 1px;
+    background-color: #9a5f00;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+#maximize-button::before,
+#maximize-button::after {
+    content: '';
+    position: absolute;
+    background-color: #006500;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+#maximize-button::before {
+    width: 6px;
+    height: 1px;
+}
+
+#maximize-button::after {
+    width: 1px;
+    height: 6px;
+}
+
+.window-controls:hover #close-button::before,
+.window-controls:hover #close-button::after,
+.window-controls:hover #minimize-button::before,
+.window-controls:hover #maximize-button::before,
+.window-controls:hover #maximize-button::after {
+    opacity: 1;
+}
+
+.window-control-button svg {
+    display: none;
+}
+
+html, body {
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+:root {
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+@media screen {
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0.75rem;
+        pointer-events: none;
+        z-index: 9999;
+    }
+}
+
+.button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#preview-button {
+    cursor: pointer;
+    z-index: 100;
+    pointer-events: auto;
+    filter: invert(1);
+    padding-top: 0.25rem;
+    transition: opacity 0.2s;
+}
+
+#preview-button:hover {
+    opacity: 0.75;
+}
+
+.shortcut {
+    color: #999;
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+#sidebar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 200px;
+    height: calc(100vh - 70px);
+    border-right: 1px solid #ea580c;
+    box-sizing: border-box;
+    background-color: #18181b;
+    overflow-y: auto;
+    z-index: 5;
+}
+
+#sidebar h3 {
+    padding: 10px;
+    margin: 0;
+    font-size: 16px;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.recent-files {
+    padding: 5px 0;
+}
+
+.recent-file {
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recent-file:hover {
+    background-color: #3a3a3a;
+}
