@@ -15,6 +15,9 @@
         "build:ui": "electron .",
         "dev": "deno task \"prod:*\" && deno task \"build:*\"",
         "package": "electron-builder",
+        "package:linux": "electron-builder --linux",
+        "package:macos": "electron-builder --mac",
+        "package:all": "electron-builder --linux --mac",
         "fmt": "deno fmt",
         "lint": "deno lint",
         "lint:fix": "deno lint --fix",
@@ -32,9 +35,45 @@
         ],
         "linux": {
             "target": [
-                "AppImage"
+                {
+                    "target": "AppImage",
+                    "arch": ["x64", "arm64"]
+                },
+                {
+                    "target": "deb",
+                    "arch": ["x64", "arm64"]
+                }
             ],
-            "category": "Utility"
+            "category": "Utility",
+            "icon": "assets/icon.png",
+            "maintainer": "Thoq <tristan@cirkl.ai>",
+            "desktop": {
+                "Name": "Magma",
+                "Comment": "A powerful note taking app",
+                "Categories": "Office;TextEditor;Utility;"
+            }
+        },
+        "mac": {
+            "target": [
+                {
+                    "target": "dmg",
+                    "arch": ["x64", "arm64"]
+                },
+                {
+                    "target": "zip",
+                    "arch": ["x64", "arm64"]
+                }
+            ],
+            "category": "public.app-category.productivity",
+            "icon": "assets/icon.icns",
+            "hardenedRuntime": true,
+            "gatekeeperAssess": false,
+            "entitlements": "assets/entitlements.mac.plist",
+            "entitlementsInherit": "assets/entitlements.mac.plist"
+        },
+        "dmg": {
+            "sign": false,
+            "writeUpdateInfo": false
         }
     },
     "devDependencies": {
