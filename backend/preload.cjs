@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('api', {
             'file:open',
             'file:save',
             'file:save-as',
+            'file:locate',
             'app:preferences',
             'display-app-menu'
         ];
@@ -37,6 +38,8 @@ contextBridge.exposeInMainWorld('api', {
             'file:save-as-requested',
             'file:tab-changed',
             'file:tab-closed',
+            'file:not-found',
+            'file:located',
             'menu:open-file',
             'menu:save-file',
             'menu:save-file-as'

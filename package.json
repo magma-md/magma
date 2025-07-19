@@ -31,7 +31,8 @@
         },
         "files": [
             "dist/**/*",
-            "renderer/**/*"
+            "renderer/**/*",
+            "backend/**/*"
         ],
         "linux": {
             "target": [

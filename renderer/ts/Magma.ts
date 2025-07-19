@@ -103,6 +103,84 @@ document.addEventListener("DOMContentLoaded", () => {
             setActiveTab(newTab.id);
         });
 
+        window.api.receive('file:not-found', (data: { filePath: string }) => {
+            const {filePath} = data;
+
+            const dialog = document.createElement('div');
+            dialog.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
+
+            const dialogContent = document.createElement('div');
+            dialogContent.className = 'bg-zinc-900 p-6 rounded-lg shadow-lg max-w-md w-full';
+
+            const title = document.createElement('h3');
+            title.className = 'text-xl font-bold text-orange-500 mb-4';
+            title.textContent = 'File cannot be found!';
+
+            const message = document.createElement('p');
+            message.className = 'text-gray-300 mb-6';
+            message.textContent = `The file "${filePath.split('/').pop()}" could not be found at the specified location.`;
+
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'flex justify-end space-x-4';
+
+            const keepButton = document.createElement('button');
+            keepButton.className = 'px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700';
+            keepButton.textContent = 'Keep in Recents';
+            keepButton.addEventListener('click', () => {
+                document.body.removeChild(dialog);
+            });
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700';
+            removeButton.textContent = 'Remove From Recents';
+            removeButton.addEventListener('click', () => {
+                recentFiles = recentFiles.filter(path => path !== filePath);
+                saveRecentFiles();
+                renderRecentFiles();
+
+                document.body.removeChild(dialog);
+            });
+
+            const locateButton = document.createElement('button');
+            locateButton.className = 'px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700';
+            locateButton.textContent = 'Locate File';
+            locateButton.addEventListener('click', () => {
+                window.api.send('file:locate', {filePath});
+                document.body.removeChild(dialog);
+            });
+
+            buttonContainer.appendChild(keepButton);
+            buttonContainer.appendChild(removeButton);
+            buttonContainer.appendChild(locateButton);
+
+            dialogContent.appendChild(title);
+            dialogContent.appendChild(message);
+            dialogContent.appendChild(buttonContainer);
+            dialog.appendChild(dialogContent);
+
+            document.body.appendChild(dialog);
+
+            if(document.body.contains(dialog)) {
+                recentFiles = recentFiles.filter(path => path !== filePath);
+                saveRecentFiles();
+                renderRecentFiles();
+                document.body.removeChild(dialog);
+            }
+        });
+
+        window.api.receive('file:located', (data: { oldFilePath: string, newFilePath: string, content: string }) => {
+            const {oldFilePath, newFilePath, content} = data;
+
+            recentFiles = recentFiles.filter(path => path !== oldFilePath);
+
+            addToRecentFiles(newFilePath);
+
+            renderRecentFiles();
+
+            const newTab = createNewTab(newFilePath, content);
+            setActiveTab(newTab.id);
+        });
+
         window.api.receive('file:saved', (data: { filePath: string, success: boolean, error?: string }) => {
             if(data.success && activeTabId) {
                 const tab = tabs.find(t => t.id === activeTabId);

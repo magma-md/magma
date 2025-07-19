@@ -95,17 +95,24 @@ function createWindow() {
     });
 
     ipcMain.on('file:new', () => {
-        mainWindow.webContents.send('file:opened', { filePath: null, content: '' });
+        mainWindow.webContents.send('file:opened', {filePath: null, content: ''});
     });
 
-    ipcMain.on('file:open', async (_, args) => {
+    ipcMain.on('file:open', async(_, args) => {
         try {
-            if (args && args.filePath) {
+            if(args && args.filePath) {
                 const filePath = args.filePath;
+
+                const fs = require('fs');
+                if(!fs.existsSync(filePath)) {
+                    mainWindow.webContents.send('file:not-found', {filePath});
+                    return;
+                }
+
                 try {
                     const content = await IoUtility.readFile(filePath);
-                    mainWindow.webContents.send('file:opened', { filePath, content });
-                } catch (error) {
+                    mainWindow.webContents.send('file:opened', {filePath, content});
+                } catch(error) {
                     console.error('Error opening specific file:', error);
                 }
                 return;
@@ -114,67 +121,93 @@ function createWindow() {
             const filePaths = await IoUtility.promptOpen({
                 properties: ['openFile'],
                 filters: [
-                    { name: 'Markdown', extensions: ['md', 'markdown'] },
-                    { name: 'Text', extensions: ['txt'] },
-                    { name: 'All Files', extensions: ['*'] }
+                    {name: 'Markdown', extensions: ['md', 'markdown']},
+                    {name: 'Text', extensions: ['txt']},
+                    {name: 'All Files', extensions: ['*']}
                 ]
             });
-            
-            if (filePaths && filePaths.length > 0) {
+
+            if(filePaths && filePaths.length > 0) {
                 const filePath = filePaths[0];
                 const content = await IoUtility.readFile(filePath);
-                mainWindow.webContents.send('file:opened', { filePath, content });
+                mainWindow.webContents.send('file:opened', {filePath, content});
             }
-        } catch (error) {
+        } catch(error) {
             console.error('Error opening file:', error);
         }
     });
 
-    ipcMain.on('file:save', async (_, { filePath, content }) => {
+    ipcMain.on('file:save', async(_, {filePath, content}) => {
         try {
-            if (!filePath) {
-                mainWindow.webContents.send('file:save-as-requested', { content });
+            if(!filePath) {
+                mainWindow.webContents.send('file:save-as-requested', {content});
                 return;
             }
-            
+
             await IoUtility.writeFile(filePath, content);
-            mainWindow.webContents.send('file:saved', { filePath, success: true });
-        } catch (error) {
+            mainWindow.webContents.send('file:saved', {filePath, success: true});
+        } catch(error) {
             console.error('Error saving file:', error);
             if(error instanceof Error)
-                mainWindow.webContents.send('file:saved', { filePath, success: false, error: error.message });
+                mainWindow.webContents.send('file:saved', {filePath, success: false, error: error.message});
             else
-                mainWindow.webContents.send('file:saved', { filePath, success: false, error: error });
+                mainWindow.webContents.send('file:saved', {filePath, success: false, error: error});
         }
     });
 
-    ipcMain.on('file:save-as', async (_, { content }) => {
+    ipcMain.on('file:save-as', async(_, {content}) => {
         try {
             const filePath = await IoUtility.promptSave({
                 filters: [
-                    { name: 'Markdown', extensions: ['md'] },
-                    { name: 'Text', extensions: ['txt'] },
-                    { name: 'All Files', extensions: ['*'] }
+                    {name: 'Markdown', extensions: ['md']},
+                    {name: 'Text', extensions: ['txt']},
+                    {name: 'All Files', extensions: ['*']}
                 ]
             });
-            
-            if (filePath) {
+
+            if(filePath) {
                 await IoUtility.writeFile(filePath, content);
-                mainWindow.webContents.send('file:saved', { filePath, success: true });
+                mainWindow.webContents.send('file:saved', {filePath, success: true});
             }
-        } catch (error) {
+        } catch(error) {
             console.error('Error saving file:', error);
-            if (!error) return;
+            if(!error) return;
 
             if(error instanceof Error)
-                mainWindow.webContents.send('file:saved', { success: false, error: error.message });
+                mainWindow.webContents.send('file:saved', {success: false, error: error.message});
             else
-                mainWindow.webContents.send('file:saved', { success: false, error: error });
+                mainWindow.webContents.send('file:saved', {success: false, error: error});
         }
     });
 
     ipcMain.on('app:preferences', () => {
         // todo: add preferences
+    });
+
+    ipcMain.on('file:locate', async(_, {filePath}) => {
+        try {
+            const filePaths = await IoUtility.promptOpen({
+                properties: ['openFile'],
+                filters: [
+                    {name: 'Markdown', extensions: ['md', 'markdown']},
+                    {name: 'Text', extensions: ['txt']},
+                    {name: 'All Files', extensions: ['*']}
+                ]
+            });
+
+            if(filePaths && filePaths.length > 0) {
+                const newFilePath = filePaths[0];
+                const content = await IoUtility.readFile(newFilePath);
+
+                mainWindow.webContents.send('file:located', {
+                    oldFilePath: filePath,
+                    newFilePath,
+                    content
+                });
+            }
+        } catch(error) {
+            console.error('Error locating file:', error);
+        }
     });
 
     return mainWindow;
