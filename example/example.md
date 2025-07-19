@@ -16,6 +16,7 @@ console.log("Hello World!");
 
 [Link to somewhere](https://example.com)
 
+Seperator:
 ---
 
 And some final text.

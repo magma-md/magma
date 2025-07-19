@@ -63,13 +63,7 @@ class MagmaRenderer {
             pattern: /\[(.+?)]\((.+?)\)/g,
             replacement: (_, text, url) => {
                 const escapedUrl = url.replace(/'/g, "\\'");
-                return `<a
-                          href="${url}"
-                          class="text-orange-500 hover:text-orange-400 underline"
-                          onclick="event.preventDefault(); window.electron?.openExternal('${escapedUrl}');"
-                        >
-                          ${text}
-                        </a>
+                return `<a href="${url}" class="text-orange-500 hover:text-orange-400 underline" onclick="event.preventDefault(); window.electron?.openExternal('${escapedUrl}');">${text}</a>
                 `.trim();
             }
         },
